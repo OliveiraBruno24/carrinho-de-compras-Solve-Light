@@ -15,7 +15,7 @@ function ShoppingCart() {
         setlistProducts,
         total,
         setTotal,
-        setNotasNecessarias
+        notasMinimas
     } = useContext(shoppingCartContext);
    const [addProductButton, setAddProductButton] = useState<boolean>(true)
 
@@ -34,9 +34,9 @@ function ShoppingCart() {
 
     const addProduct = () => {
         if(product && price !== '') {
-            const newProduct: Product = {product: product, price: parseInt(price as string)};
+            const newProduct: Product = {product: product, price: parseInt(price as string), quantity: 1};
             setlistProducts([...listProducts, newProduct]);
-            setTotal(total + parseInt(price as string))
+            setTotal(total + (parseInt(price as string)))
             if(listProducts.length === 9) {
                 setAddProductButton(false)
             }
@@ -46,36 +46,25 @@ function ShoppingCart() {
     }
 
     const finalizarCompras = () => {
-        const notasDisponiveis = [100, 50, 20, 10, 5, 2, 1];
-        let valorRestante = total;
-        const notasUsadas: string[] = [];
-    
-        notasDisponiveis.forEach((nota) => {
-          const qtdNotas = Math.floor(valorRestante / nota);
-          if (qtdNotas > 0) {
-            notasUsadas.push(`${qtdNotas} nota(s) de R$${nota}`);
-            valorRestante -= qtdNotas * nota;
-          }
-        });
-        setNotasNecessarias(notasUsadas);
+        notasMinimas();
         navigate('/myProducts')
-    };
-
+    }
     
     return (
         <>
             <h1>Carrinho de compras</h1>
             <label>
                 Produto:
-                <input type="text"  value={product} onChange={handleProductChange}/>
+                <input type="text"  value={product} onChange={handleProductChange} placeholder="mouse gamer"/>
             </label>
             <label>
                 Preço:
-                <input type="number" value={price} onChange={handlePriceChange}/>
+                <input type="number" value={price} onChange={handlePriceChange} placeholder="235"/>
             </label>
             <button onClick={addProduct}
             disabled={!addProductButton}>Adicionar</button>
-            <button onClick={finalizarCompras}>Finalizar compras</button>
+            <button onClick={finalizarCompras}
+            disabled={listProducts.length === 0}>Finalizar compras</button>
            
         </>
     );
