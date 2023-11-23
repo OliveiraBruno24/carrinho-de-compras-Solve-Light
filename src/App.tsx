@@ -11,7 +11,6 @@ function App() {
         <Route path="/" element={<ShoppingCart />} />
         <Route path="/myProducts" element={<MyProducts />} />
       </Routes>
-      
     </>
   )
 }
