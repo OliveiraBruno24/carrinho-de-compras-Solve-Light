@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import shoppingCartContext from '../context/shoppingCartContext';
 import { Product } from "../utils/types";
@@ -20,7 +20,7 @@ function ShoppingCart() {
         notasMinimas
     } = useContext(shoppingCartContext);
    const [addProductButton, setAddProductButton] = useState<boolean>(true)
-
+   const [errorMessage, setErrorMessage] = useState<boolean>(false)
     
     const navigate = useNavigate();
 
@@ -31,6 +31,12 @@ function ShoppingCart() {
         const value = event.target.value;
         if (/^\d+$/.test(value) || value === '') {
             setPrice(Number(value));
+        }
+        else {
+            setErrorMessage(true)
+            setTimeout(() => {
+            setErrorMessage(false)
+           }, 2500) 
         }
     };
 
@@ -45,12 +51,19 @@ function ShoppingCart() {
             setProduct('');
             setPrice('');
             }
+           
     }
+
+    const hasAnyProduct = useMemo(() => {
+    return  listProducts.length > 0
+    }, [listProducts]) 
 
     const finalizarCompras = () => {
         notasMinimas();
         navigate('/myProducts')
     }
+
+  
     
     return (
         <>
@@ -70,12 +83,13 @@ function ShoppingCart() {
             <label className="block mb-4 px-5 font-bold">
                 Preço:
                 <input
-                    type="number"
+                    type="text"
                     value={price}
                     onChange={handlePriceChange}
                     placeholder="235"
                     className="border p-2 rounded-2xl  ml-6 text-center"
                 />
+                {errorMessage === true ? <h1 className="text-red-600"> O preço deve ser inteiro e positívo</h1>: null}
             </label>
             <button
                 onClick={addProduct}
@@ -86,7 +100,7 @@ function ShoppingCart() {
             </button>
             <button
                 onClick={finalizarCompras}
-                disabled={listProducts.length === 0}
+                disabled={!hasAnyProduct}
                 className="bg-neutral-600 text-white px-4 py-2 rounded mr-2"
             >
                 Finalizar compras
