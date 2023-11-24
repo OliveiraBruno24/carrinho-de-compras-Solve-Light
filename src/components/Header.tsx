@@ -48,7 +48,8 @@ export function Header() {
           </h1>
           <button 
           disabled={!hasAnyProduct} onClick={() => navigate('/myProducts')} className="ml-4 focus:outline-none">
-          <img className="w-10 md:w-12 lg:w-16 mr-3" src="src/images/carrinho-de-compras.png" alt="carrinho-de-compras.png" />
+          <img className="w-10 md:w-12 lg:w-16 mr-3"
+           src="src/images/carrinho-de-compras.png" alt="carrinho-de-compras.png" />
         </button> 
         </>}
         </div>
