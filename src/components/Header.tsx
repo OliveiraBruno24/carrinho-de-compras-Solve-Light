@@ -29,7 +29,7 @@ export function Header() {
           {isMyProductsPage ? (
           <>
           <button onClick={handleClear} className=" text-white px-4 py-2 rounded mt-4 flex relative ">
-            <img className=" w-10 md:w-12 lg:w-16 mr-3" src="src/images/lixeira-de-reciclagem.png" alt="" />
+            <img className=" w-10 md:w-8 lg:w-7 mr-3" src="src/images/lixeira-de-reciclagem.png" alt="" />
           </button>
           <h1 className="text-lg md:text-xl lg:text-2xl text-gray-500 dark:text-white mb-0 flex items-center justify-center flex-grow font-agbalumo">
             <img className="w-10 md:w-12 lg:w-16 mr-3"src="src/images/carrinho-carrinho.png" alt="Carrinho-de-compras.png" />

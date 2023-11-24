@@ -71,19 +71,26 @@ export function MyProducts() {
             <div className="md:w-2/3 dark:bg-gray-700 rounded-3xl mb-4 md:mb-0 ">
               <h2 className="text-2xl font-bold mb-2 text-white">Lista de Produtos: </h2>
               <ul>
-                {listProducts.map((item, index) => (
-                  <li key={index} className="flex items-center justify-center mb-2 text-white ">
-                    <span className="mr-2"> {item.product} - R${item.price}</span>
-                    <button onClick={() => addQuantity(index)}
-                      disabled={isAddButtonDisabled} className="bg-zinc-600 text-white px-2 py-1 rounded">
-                      +
-                    </button>
-                    <span className="mx-2">{item.quantity}</span>
-                    <button onClick={() => removeQuantity(index)} className="bg-black text-white px-2 py-1 rounded">
-                      -
-                    </button>
-                  </li>
-                ))}
+                {listProducts.length > 0 ? (
+                  listProducts.map((item, index) => (
+                    <li key={index} className="flex items-center justify-center mb-2 text-white">
+                      <span className="mr-2"> {item.product} - R${item.price}</span>
+                      <button
+                        onClick={() => addQuantity(index)}
+                        disabled={isAddButtonDisabled}
+                        className="bg-zinc-600 text-white px-2 py-1 rounded"
+                      >
+                        +
+                      </button>
+                      <span className="mx-2">{item.quantity}</span>
+                      <button onClick={() => removeQuantity(index)} className="bg-black text-white px-2 py-1 rounded">
+                        -
+                      </button>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-white">Seu carrinho está vazio!</li>
+                )}
               </ul>
              
             </div>
