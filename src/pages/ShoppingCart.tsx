@@ -4,6 +4,7 @@ import shoppingCartContext from '../context/shoppingCartContext';
 import { Product } from "../utils/types";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
+import { buttonControl } from "../utils/buttonControl";
 
 
 
@@ -17,9 +18,9 @@ function ShoppingCart() {
         setlistProducts,
         total,
         setTotal,
-        notasMinimas
+        minimumBanknotes,
+        canAddProduct
     } = useContext(shoppingCartContext);
-   const [addProductButton, setAddProductButton] = useState<boolean>(true)
    const [errorMessage, setErrorMessage] = useState<boolean>(false)
     
     const navigate = useNavigate();
@@ -39,27 +40,26 @@ function ShoppingCart() {
            }, 2500) 
         }
     };
-
+    
+   
     const addProduct = () => {
         if(product && price !== '') {
             const newProduct: Product = {product: product, price: parseInt(price as string), quantity: 1};
             setlistProducts([...listProducts, newProduct]);
             setTotal(total + (parseInt(price as string)))
-            if(listProducts.length === 9) {
-                setAddProductButton(false)
-            }
+            buttonControl(listProducts)
             setProduct('');
             setPrice('');
-            }
-           
     }
 
+    
+    }
     const hasAnyProduct = useMemo(() => {
-    return  listProducts.length > 0
+    return  listProducts && listProducts.length > 0
     }, [listProducts]) 
 
-    const finalizarCompras = () => {
-        notasMinimas();
+    const finishshopping = () => {
+        minimumBanknotes();
         navigate('/myProducts')
     }
 
@@ -92,14 +92,14 @@ function ShoppingCart() {
                 {errorMessage === true ? <h1 className="text-red-600"> O preço deve ser inteiro e positívo</h1>: null}
             </label>
             <button
+                disabled={!canAddProduct}
                 onClick={addProduct}
-                disabled={!addProductButton}
                 className="bg-neutral-600 text-white px-4 py-2 rounded mx-5"
             >
                 Adicionar
             </button>
             <button
-                onClick={finalizarCompras}
+                onClick={finishshopping}
                 disabled={!hasAnyProduct}
                 className="bg-neutral-600 text-white px-4 py-2 rounded mr-2"
             >

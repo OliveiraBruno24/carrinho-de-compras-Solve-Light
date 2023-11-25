@@ -21,7 +21,10 @@ export type ShoppingCartContextTypes = {
     setlistProducts: React.Dispatch<React.SetStateAction<Product[]>>,
     total: number,
     setTotal: React.Dispatch<React.SetStateAction<number>>,
-    notasNecessarias: string[],
-    setNotasNecessarias: React.Dispatch<React.SetStateAction<string[]>>
-    notasMinimas: () => void;
+    requiredballots: string[],
+    setrequiredballots: React.Dispatch<React.SetStateAction<string[]>>
+    minimumBanknotes: () => void;
+    handleButtonControl: () => void;
+    canAddProduct: boolean
+    setCanAddProduct: React.Dispatch<React.SetStateAction<boolean>>,
 }

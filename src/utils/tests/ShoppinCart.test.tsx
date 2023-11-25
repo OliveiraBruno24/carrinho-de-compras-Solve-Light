@@ -3,45 +3,14 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import renderWithRouter from "../../renderWithRouter";
 import App from "../../App";
-import mockShoppingCartProvider from "../mock/provider.mock";
 import  ShoppingCartProvider  from "../../context/shoppingCartProvider";
+import { renderWithContext } from "../../renderWithContext";
+import ShoppingCart from "../../pages/ShoppingCart";
+import {mockContextValue} from '../mock/provider.mock'
 
 describe('Testando ShoppingCart', () => {
-    beforeEach(() => {
-        mockShoppingCartProvider(); 
-    });
 
-    it('Verifica se a tela foi renderizada', () => {
-        renderWithRouter(
-            <ShoppingCartProvider>
-                <App />
-            </ShoppingCartProvider>,
-            { route: '/' }
-        );
-
-        const title = screen.getByRole('heading', { name: /Carrinho de compras/i });
-        expect(title).toBeInTheDocument();
-    });
-
-    it('input "Produto" funciona corretamente', async () => {
-        renderWithRouter(
-            <ShoppingCartProvider>
-                <App />
-            </ShoppingCartProvider>,
-            { route: '/' }
-        );
-        const inputProduct = screen.getByLabelText(/Produto/i) as HTMLInputElement;
-
-        expect(inputProduct).toBeInTheDocument();
-
-        userEvent.type(inputProduct, 'Mouse Gamer');
-
-        await waitFor(() => {
-            expect(inputProduct.value).toBe('Mouse Gamer');
-        });
-    });
-
-    it('input "Preço" funciona corretamente', async () => {
+    it('não é possível adicionar produto com valor negativo', async () => {
         renderWithRouter(
             <ShoppingCartProvider>
                 <App />
@@ -50,34 +19,27 @@ describe('Testando ShoppingCart', () => {
         );
 
         const inputPrice = screen.getByLabelText(/Preço/i) as HTMLInputElement;
-
-        expect(inputPrice).toBeInTheDocument();
-
-        userEvent.type(inputPrice, '235');
+        userEvent.type(inputPrice, '-1');
 
         await waitFor(() => {
-            expect(inputPrice.value).toEqual('235');
-        });
-    });
-    it('adiciona produto ao carrinho corretamente', async () => {
-        renderWithRouter(
-            <ShoppingCartProvider>
-                <App />
-            </ShoppingCartProvider>,
-            { route: '/' }
-        );
-
-        const inputProduct = screen.getByLabelText(/Produto/i) as HTMLInputElement;
-        const inputPrice = screen.getByLabelText(/Preço/i) as HTMLInputElement;
-        userEvent.type(inputProduct, 'Mouse Gamer');
-        userEvent.type(inputPrice, '235');
-        
-        const addToCartButton = screen.getByRole('heading', { name: /Carrinho de compras/i });
-        userEvent.click(addToCartButton);
-
-        expect(inputProduct.value).toBe('');
-        expect(inputPrice.value).toBe('');
+            const errorMessage = screen.getByRole('heading', { name: /O preço deve ser inteiro e positívo/i });
+            expect(errorMessage).toBeInTheDocument();
+          });
 
     });
+
+    it('Não é possível cadastrar mais de 10 itens ao carrinho', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        mockContextValue.listProducts = Array.from({length: 10}).map((_,i) => i +1) as any[]
+        renderWithContext(
+            <ShoppingCart />,
+            {
+                initialValue:{ mockContextValue }
+            }
+            );
+            const addButton = screen.getByRole('button', {name: /Adicionar/i});
+            expect(addButton).toBeDisabled();
+    })
+
     
 });
