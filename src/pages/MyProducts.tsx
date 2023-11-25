@@ -105,7 +105,7 @@ export function MyProducts() {
             </div>
       
             <div className=" shadow-custom w-full min-w-min md:w-1/3 ml-0 md:ml-4 p-4 rounded-3xl dark:bg-gray-700  ">
-              <h2 className="text-2xl font-bold mb-2 text-white">Notas Necessárias:</h2>
+              <h2 className="text-2xl font-bold mb-2 text-white ">Notas Necessárias:</h2>
               <ul className="flex flex-wrap items-center">
                 {requiredballots.map((nota, index) => (
                   <li key={index} className="flex items-center justify-center mb-2 text-white">

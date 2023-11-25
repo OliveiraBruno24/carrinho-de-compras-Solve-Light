@@ -70,7 +70,7 @@ function ShoppingCart() {
             <Header />
         <div className="container mx-auto my-8">
             <h1 className="text-3xl font-bold mb-4">Carrinho de compras</h1>
-            <label className="block mb-4 font-bold">
+            <label className="flex mb-4 font-bold flex-nowrap">
                 Produto:
                 <input
                     type="text"
@@ -80,14 +80,14 @@ function ShoppingCart() {
                     className="border p-2 rounded-2xl ml-4 text-center"
                 />
             </label>
-            <label className="block mb-4 px-5 font-bold">
+            <label className="flex mb-4 px-5 font-bold flex-nowrap">
                 Preço:
                 <input
                     type="text"
                     value={price}
                     onChange={handlePriceChange}
                     placeholder="235"
-                    className="border p-2 rounded-2xl  ml-6 text-center"
+                    className="border p-2 rounded-2xl  ml-4 text-center"
                 />
                 {errorMessage === true ? <h1 className="text-red-600"> O preço deve ser inteiro e positívo</h1>: null}
             </label>
