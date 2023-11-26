@@ -80,7 +80,7 @@ function ShoppingCart() {
                     className="border p-2 rounded-2xl ml-4 text-center"
                     />
             </label>
-                    {errorMessage === true ? <h1 className="text-red-600 mb-2 mt-2"> O preço deve ser inteiro e positívo</h1>: null}
+                    {errorMessage === true ? <h1 className="text-red-600 mb-4 mt-2 flex justify-center ml-12"> O preço deve ser inteiro e positívo</h1>: null}
             <label className="flex mb-4 px-1 font-bold flex-nowrap ">
                 Preço:
                 <input
