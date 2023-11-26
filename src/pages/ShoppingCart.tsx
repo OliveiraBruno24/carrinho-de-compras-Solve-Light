@@ -78,18 +78,19 @@ function ShoppingCart() {
                     onChange={handleProductChange}
                     placeholder="mouse gamer"
                     className="border p-2 rounded-2xl ml-4 text-center"
-                />
+                    />
             </label>
-            <label className="flex mb-4 px-5 font-bold flex-nowrap">
+                    {errorMessage === true ? <h1 className="text-red-600 mb-2 mt-2"> O preço deve ser inteiro e positívo</h1>: null}
+            <label className="flex mb-4 px-1 font-bold flex-nowrap ">
                 Preço:
                 <input
                     type="text"
                     value={price}
                     onChange={handlePriceChange}
                     placeholder="235"
-                    className="border p-2 rounded-2xl  ml-4 text-center"
+                    className="border p-2 rounded-2xl  ml-7 text-center"
                 />
-                {errorMessage === true ? <h1 className="text-red-600"> O preço deve ser inteiro e positívo</h1>: null}
+                
             </label>
             <button
                 disabled={!canAddProduct}
@@ -101,7 +102,7 @@ function ShoppingCart() {
             <button
                 onClick={finishshopping}
                 disabled={!hasAnyProduct}
-                className="bg-neutral-600 text-white px-4 py-2 rounded mr-2"
+                className={`bg-neutral-600 text-white px-4 py-2 rounded mr-2 ${!hasAnyProduct ? 'opacity-50' : ''}`}
             >
                 Finalizar compras
             </button>

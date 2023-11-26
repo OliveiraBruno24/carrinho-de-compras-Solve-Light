@@ -95,9 +95,8 @@ export function MyProducts() {
                   ))
                 ) : (
                   <>
-                  <li className="text-white">Seu carrinho está vazio!</li>
-                  <button className="bg-neutral-600 text-white px-4 py-2 rounded mx-5" 
-                  onClick={backToShopping}>Adicionar produtos</button>
+                  <li className="text-white mb-4 font-bold">Seu carrinho está vazio!</li>
+                  
                   </>
                 )}
               </ul>
@@ -119,6 +118,10 @@ export function MyProducts() {
             </div>
             
           </div>
+          {listProducts.length === 0 ? (
+            <button className="bg-neutral-600 text-white px-4 py-2 mt-4 rounded mx-5" 
+            onClick={backToShopping}>Adicionar produtos</button>
+          ) : null }
           <Header />
           <Footer />
         </div>
