@@ -3,14 +3,19 @@ import shoppingCartContext from '../context/shoppingCartContext';
 import { Product } from "../utils/types";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import cashIcon from '../images/dinheiro.png'
+import { useNavigate } from "react-router-dom";
 
 
 export function MyProducts() {
 
-    const {listProducts,notasNecessarias, total, setlistProducts, setTotal,  notasMinimas} = useContext(shoppingCartContext);
+    const {listProducts,requiredballots, total, setlistProducts, setTotal,  minimumBanknotes} = useContext(shoppingCartContext);
     const [isAddButtonDisabled, setIsAddButtonDisabled] = useState(false);
-    
+    const navigate = useNavigate()
 
+    const backToShopping = () => {
+      navigate('/')
+    }
     const addQuantity = (index: number) => {
         setlistProducts((prevListProducts) => {
             const updatedList = [...prevListProducts];
@@ -36,7 +41,7 @@ export function MyProducts() {
     };
 
     useEffect(() => {
-        notasMinimas();
+      minimumBanknotes();
         if(!listProducts) setTotal(0)
     },[total])
 
@@ -71,29 +76,39 @@ export function MyProducts() {
             <div className="md:w-2/3 dark:bg-gray-700 rounded-3xl mb-4 md:mb-0 ">
               <h2 className="text-2xl font-bold mb-2 text-white">Lista de Produtos: </h2>
               <ul>
-                {listProducts.map((item, index) => (
-                  <li key={index} className="flex items-center justify-center mb-2 text-white ">
-                    <span className="mr-2"> {item.product} - R${item.price}</span>
-                    <button onClick={() => addQuantity(index)}
-                      disabled={isAddButtonDisabled} className="bg-zinc-600 text-white px-2 py-1 rounded">
-                      +
-                    </button>
-                    <span className="mx-2">{item.quantity}</span>
-                    <button onClick={() => removeQuantity(index)} className="bg-black text-white px-2 py-1 rounded">
-                      -
-                    </button>
-                  </li>
-                ))}
+                {listProducts.length > 0 ? (
+                  listProducts.map((item, index) => (
+                    <li key={index} className="flex items-center justify-center mb-2 text-white">
+                      <span className="mr-2"> {item.product} - R${item.price}</span>
+                      <button
+                        onClick={() => addQuantity(index)}
+                        disabled={isAddButtonDisabled}
+                        className="bg-zinc-600 text-white px-2 py-1 rounded"
+                      >
+                        +
+                      </button>
+                      <span className="mx-2">{item.quantity}</span>
+                      <button onClick={() => removeQuantity(index)} className="bg-black text-white px-2 py-1 rounded">
+                        -
+                      </button>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                  <li className="text-white mb-4 font-bold">Seu carrinho está vazio!</li>
+                  
+                  </>
+                )}
               </ul>
              
             </div>
       
             <div className=" shadow-custom w-full min-w-min md:w-1/3 ml-0 md:ml-4 p-4 rounded-3xl dark:bg-gray-700  ">
-              <h2 className="text-2xl font-bold mb-2 text-white">Notas Necessárias:</h2>
+              <h2 className="text-2xl font-bold mb-2 text-white ">Notas Necessárias:</h2>
               <ul className="flex flex-wrap items-center">
-                {notasNecessarias.map((nota, index) => (
+                {requiredballots.map((nota, index) => (
                   <li key={index} className="flex items-center justify-center mb-2 text-white">
-                    <img className="w-5 md:w-6 lg:w-8 mr-1" src="src/images/dinheiro.png" alt="nota-de-dinheiro" />
+                    <img className="w-5 md:w-6 lg:w-8 mr-1" src={cashIcon} alt="nota-de-dinheiro" />
                     <span>{nota}</span>
                   </li>
                 ))}
@@ -103,6 +118,10 @@ export function MyProducts() {
             </div>
             
           </div>
+          {listProducts.length === 0 ? (
+            <button className="bg-neutral-600 text-white px-4 py-2 mt-4 rounded mx-5" 
+            onClick={backToShopping}>Adicionar produtos</button>
+          ) : null }
           <Header />
           <Footer />
         </div>

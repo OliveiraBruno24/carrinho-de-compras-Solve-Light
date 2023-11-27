@@ -1,9 +1,10 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import shoppingCartContext from '../context/shoppingCartContext';
 import { Product } from "../utils/types";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
+import { buttonControl } from "../utils/buttonControl";
 
 
 
@@ -17,10 +18,10 @@ function ShoppingCart() {
         setlistProducts,
         total,
         setTotal,
-        notasMinimas
+        minimumBanknotes,
+        canAddProduct
     } = useContext(shoppingCartContext);
-   const [addProductButton, setAddProductButton] = useState<boolean>(true)
-
+   const [errorMessage, setErrorMessage] = useState<boolean>(false)
     
     const navigate = useNavigate();
 
@@ -32,32 +33,44 @@ function ShoppingCart() {
         if (/^\d+$/.test(value) || value === '') {
             setPrice(Number(value));
         }
+        else {
+            setErrorMessage(true)
+            setTimeout(() => {
+            setErrorMessage(false)
+           }, 2500) 
+        }
     };
-
+    
+   
     const addProduct = () => {
         if(product && price !== '') {
             const newProduct: Product = {product: product, price: parseInt(price as string), quantity: 1};
             setlistProducts([...listProducts, newProduct]);
             setTotal(total + (parseInt(price as string)))
-            if(listProducts.length === 9) {
-                setAddProductButton(false)
-            }
+            buttonControl(listProducts)
             setProduct('');
             setPrice('');
-            }
     }
 
-    const finalizarCompras = () => {
-        notasMinimas();
+    
+    }
+    const hasAnyProduct = useMemo(() => {
+    return  listProducts && listProducts.length > 0
+    }, [listProducts]) 
+
+    const finishshopping = () => {
+        minimumBanknotes();
         navigate('/myProducts')
     }
+
+  
     
     return (
         <>
             <Header />
         <div className="container mx-auto my-8">
             <h1 className="text-3xl font-bold mb-4">Carrinho de compras</h1>
-            <label className="block mb-4 font-bold">
+            <label className="flex mb-4 font-bold flex-nowrap">
                 Produto:
                 <input
                     type="text"
@@ -65,29 +78,31 @@ function ShoppingCart() {
                     onChange={handleProductChange}
                     placeholder="mouse gamer"
                     className="border p-2 rounded-2xl ml-4 text-center"
-                />
+                    />
             </label>
-            <label className="block mb-4 px-5 font-bold">
+                    {errorMessage === true ? <h1 className="text-red-600 mb-4 mt-2 flex justify-center ml-12"> O preço deve ser inteiro e positívo</h1>: null}
+            <label className="flex mb-4 px-1 font-bold flex-nowrap ">
                 Preço:
                 <input
-                    type="number"
+                    type="text"
                     value={price}
                     onChange={handlePriceChange}
                     placeholder="235"
-                    className="border p-2 rounded-2xl  ml-6 text-center"
+                    className="border p-2 rounded-2xl  ml-7 text-center"
                 />
+                
             </label>
             <button
+                disabled={!canAddProduct}
                 onClick={addProduct}
-                disabled={!addProductButton}
                 className="bg-neutral-600 text-white px-4 py-2 rounded mx-5"
             >
                 Adicionar
             </button>
             <button
-                onClick={finalizarCompras}
-                disabled={listProducts.length === 0}
-                className="bg-neutral-600 text-white px-4 py-2 rounded mr-2"
+                onClick={finishshopping}
+                disabled={!hasAnyProduct}
+                className={`bg-neutral-600 text-white px-4 py-2 rounded mr-2 ${!hasAnyProduct ? 'opacity-50' : ''}`}
             >
                 Finalizar compras
             </button>
