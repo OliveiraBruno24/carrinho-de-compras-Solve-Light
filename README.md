@@ -29,7 +29,7 @@ O Carrinho de compras inteligente foi um desafio de lógica proposto pela empres
 </div>
 
 ### Deploy
-Pode ver a aplicação rodando clicando [aqui](https://carrinho-de-compras-solve-light-4f67bdsvj-oliveirabruno24.vercel.app/)
+Pode ver a aplicação rodando clicando [aqui](https://carrinho-de-compras-solve-light-beqtffoh0-oliveirabruno24.vercel.app/)
 
 ### Stacks utilizadas
 
